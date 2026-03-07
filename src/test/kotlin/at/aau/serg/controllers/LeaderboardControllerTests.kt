@@ -3,8 +3,10 @@ package at.aau.serg.controllers
 import at.aau.serg.models.GameResult
 import at.aau.serg.services.GameResultService
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.assertNotNull
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.springframework.http.HttpStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.mockito.Mockito.`when` as whenever // when is a reserved keyword in Kotlin
@@ -28,9 +30,12 @@ class LeaderboardControllerTests {
 
         whenever(mockedService.getGameResults()).thenReturn(listOf(second, first, third))
 
-        val res: List<GameResult> = controller.getLeaderboard()
+        val response = controller.getLeaderboard(null)
+        val res: List<GameResult>? = response.body
 
         verify(mockedService).getGameResults()
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertNotNull(res)
         assertEquals(3, res.size)
         assertEquals(first, res[0])
         assertEquals(second, res[1])
@@ -46,9 +51,12 @@ class LeaderboardControllerTests {
 
         whenever(mockedService.getGameResults()).thenReturn(listOf(second, first, third))
 
-        val res: List<GameResult> = controller.getLeaderboard()
+        val response = controller.getLeaderboard(null)
+        val res: List<GameResult>? = response.body
 
         verify(mockedService).getGameResults()
+        assertEquals(HttpStatus.OK, response.statusCode)
+        assertNotNull(res)
         assertEquals(3, res.size)
         assertEquals(first, res[0])
         assertEquals(second, res[1])
