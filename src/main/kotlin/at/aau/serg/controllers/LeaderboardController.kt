@@ -12,8 +12,12 @@ class LeaderboardController(
     private val gameResultService: GameResultService
 ) {
 
+    /*
+     GameResults get sorted based on the score and then based on the time now
+     Minus sign in front of score means descending order
+     */
     @GetMapping
     fun getLeaderboard(): List<GameResult> =
-        gameResultService.getGameResults().sortedWith(compareBy({ -it.score }, { it.id }))
+        gameResultService.getGameResults().sortedWith(compareBy({ -it.score }, {it.timeInSeconds}))
 
 }
